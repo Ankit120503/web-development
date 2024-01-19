@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="BreedANmes"></div>
+    <button onclick="AllNames()">All Names</button>
+    <br><br>
+    <button onclick="Health()" placeholder="">Health Issues</button>
+    <input type="text">
+    <br>
+    <input type="radio" name="gender" value="Male" >Imperial
+    <input type="radio" name="gender" value="Female" >Metric
+    <button onclick="Weight()">weight</button>
+    <br>
+    <button onclick="IntelligenceFriendly()" placeholder="">Intelligence-Friendly</button><br><br>
+    <button onclick="AVerage_Intelligence()" placeholder="">Average Intelligence</button><br><br>
+    <button onclick="AVerage_Intelligence_for_child()" placeholder="">Average Intelligence for child Friendly=4</button><br>
+    <br>
+    <div id="CatInformation"></div>
+    <div id="Message"></div>
+
+    <script>
+         function AllNames() {
+          CatInformation = document.getElementById("CatInformation");
+             CatUrl = "https://api.thecatapi.com/v1/breeds";
+
+            fetch(CatUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Something went wrong.');
+                    }
+                    return response.json();
+                })
+                .then(information => {x=0
+                    information.forEach(cat => {x++
+                        var paragraph = document.createElement('p');
+                        paragraph.textContent = cat.name;
+                        CatInformation.appendChild(paragraph);
+                    });
+                    document.getElementById("Message").innerHTML="Total Cat=" +x
+                
+                })
+                .catch(error => {
+                    console.error('Error fetching JSON:', error);
+                });
+        }
+        function breedNames() {
+            var breedNames = document.getElementById("BreedANmes");
+            var CatUrl = "https://api.thecatapi.com/v1/breeds";
+
+            fetch(CatUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Something went wrong.');
+                    }
+                    return response.json();
+                })
+                .then(information => {x=0
+                    information.forEach(cat => {x++
+                        var paragraph = document.createElement('p');
+                        paragraph.textContent = cat.name;
+                        AddContent.appendChild(paragraph);
+                    });
+                    document.getElementById("Message").innerHTML="Total Cat=" +x
+                
+                })
+                .catch(error => {
+                    console.error('Error fetching JSON:', error);
+                });
+        }
+        function Weight() {
+             imperial = document.querySelector('input[name="gender"]:checked').value === "Male";
+             BreedANmes = document.getElementById("BreedANmes");
+             CatUrl = "https://api.thecatapi.com/v1/breeds";
+
+            fetch(CatUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Something went wrong.');
+                    }
+                    return response.json();
+                })
+                .then(information => {
+                    BreedANmes.innerHTML = ""; 
+                    information.forEach(cat => {
+                        var paragraph = document.createElement('p');
+                         weight = imperial ? cat.weight.imperial : cat.weight.metric;
+                         var unit = imperial ? "Imperial" : "Metric";
+                        paragraph.textContent = "weight " +unit + ": " + weight;
+                        BreedANmes.appendChild(paragraph);
+                    });
+                    document.getElementById("Message").innerHTML = "Total Cat=" + information.length;
+                })
+                .catch(error => {
+                    console.error('Error fetching JSON:', error);
+                });
+        }
+        function IntelligenceFriendly() {
+            var CatInformation = document.getElementById("CatInformation");
+            var CatUrl = "https://api.thecatapi.com/v1/breeds";
+
+            fetch(CatUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Something went wrong.');
+                    }
+                    return response.json();
+                })
+                .then(information => {
+                    CatInformation.innerHTML = ""; 
+                    information.forEach(cat => {
+                        var paragraph = document.createElement('p');
+                        paragraph.textContent = "I: " + cat.intelligence + " | F: " + cat.child_friendly;
+                        CatInformation.appendChild(paragraph);
+                    });
+                    document.getElementById("Message").innerHTML = "Total Cat=" + information.length;
+                })
+                .catch(error => {
+                    console.error('Error fetching JSON:', error);
+                });
+        }
+    </script>
+</body>
+</html>
